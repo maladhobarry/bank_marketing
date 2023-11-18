@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  selector:
+    matchLabels:
+      app: backend
+  # Everything under template is what you would usually put in your pod.yaml file
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: docker.io/library/server:latest
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5000
+        env:
+          - name: MODEL_PATH
+            value: /models/rf_with_minibatch_kmeans/model.joblib
+          - name: TRANSFORMER_PATH
+            value: /models/rf_with_minibatch_kmeans/feature_eng_pipeline.joblib
+        volumeMounts:
+          - name: models
+            mountPath: /models
+      volumes:
+        - name: models
+          persistentVolumeClaim:
+            claimName: models

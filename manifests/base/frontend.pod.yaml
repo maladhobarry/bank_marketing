@@ -1,0 +1,48 @@
+## File commented out with purpose of not being selected by label selector
+## Replaced by its Deployment
+
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: frontend
+#   labels:
+#     name: frontend
+# spec:
+#   containers:
+#   - name: frontend
+#     # TODO(LAB): Put the correct value
+#     image: docker.io/library/client
+#     # Implementation detail: This is necessary for local clusters.
+#     #                        Not specifying this will result in the
+#     #                        kubelet trying to pull indefinitely and
+#     #                        not launching the pods successfully.
+#     imagePullPolicy: IfNotPresent
+#     resources:
+#       limits:
+#         cpu: "500m"
+#         memory: "250M"
+#     ports:
+#     # Note: This is the port on the container (what is exposed by
+#     #       the Python application)
+#     #       Here, this is the streamlit application
+#     - containerPort: 8501
+#     env:
+#     - name: ECO_SOCIO_DF
+#       value: /data/external/socio_economic_indices_data.csv
+#     - name: FUTURE_RES_DF
+#       value: /data/external/campaign_results_data.csv
+#     - name: BANK_DB
+#       value: /data/bank_marketing.db
+#     # Note: Remember that k8s has a way to name services
+#     - name: SERVER_API_URL
+#         # TODO(LAB): Put the correct value. Point to the service URL.
+#         #            Has to start with "http://"
+#       value: ""
+#     volumeMounts:
+#     - name: frontend
+#       mountPath: /data
+#       subPath: data
+#   volumes:
+#     - name: frontend
+#       persistentVolumeClaim:
+#         claimName: pvc-frontend

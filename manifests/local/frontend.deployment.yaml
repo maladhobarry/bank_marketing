@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        # Modified
+        image: docker.io/library/client
+        # Implementation detail: This is necessary for local clusters.
+        #                        Not specifying this will result in the
+        #                        kubelet trying to pull indefinitely and
+        #                        not launching the pods successfully.
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            cpu: 500m
+            memory: 250M
+        ports:
+          # Note: This is the port on the container (what is exposed by
+          #       the Python application)
+          #       Here, this is the streamlit application
+          - containerPort: 8501
+        env:
+          - name: ECO_SOCIO_DF
+            value: /data/external/socio_economic_indices_data.csv
+          - name: FUTURE_RES_DF
+            value: /data/external/campaign_results_data.csv
+          - name: BANK_DB
+            value: /data/bank_marketing.db
+          # Note: Remember that k8s has a way to name services
+          - name: SERVER_API_URL
+            value: http://backend:8000/predict
+        volumeMounts:
+          - name: frontend
+            mountPath: /data
+            subPath: data
+      volumes:
+        - name: frontend
+          persistentVolumeClaim:
+            claimName: pvc-frontend
+            

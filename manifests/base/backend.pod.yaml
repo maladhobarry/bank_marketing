@@ -1,0 +1,32 @@
+## File commented out with purpose of not being selected by label selector
+## Replaced by its Deployment
+
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: backend
+#   labels:
+#     name: backend
+# spec:
+#   containers:
+#   - name: backend
+#     image: docker.io/library/server:latest
+#     imagePullPolicy: IfNotPresent
+#     resources:
+#       limits:
+#         memory: "256Mi"
+#         cpu: "500m"
+#     ports:
+#       - containerPort: 5000
+#     env:
+#       - name: MODEL_PATH
+#         value: /models/rf_with_minibatch_kmeans/model.joblib
+#       - name: TRANSFORMER_PATH
+#         value: /models/rf_with_minibatch_kmeans/feature_eng_pipeline.joblib
+#     volumeMounts:
+#       - mountPath: /models
+#         name: models
+#   volumes:
+#   - name: models
+#     persistentVolumeClaim:
+#       claimName: models
