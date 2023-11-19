@@ -8,10 +8,3 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    steps:
-    - name: Deploy to GitHub Pages
-      run: |
-        if [ ${{ github.event_name }} == 'push' ] && [ ${{ github.event.ref }} == 'refs/heads/main' ]; then
-          npm run deploy
-        fi
