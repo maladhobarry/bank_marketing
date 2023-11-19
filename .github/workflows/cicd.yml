@@ -1,14 +1,19 @@
-name: CI/CD Workflow
+name: Deploy to Google Cloud
 
 on:
   push:
     branches:
-      - main
+      - main  # Adjust the branch as needed
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout repository
+    - name: Checkout Repository
       uses: actions/checkout@v2
+
+    - name: Do Nothing
+      run: echo "This workflow does nothing."
+
+    # Add more steps as needed for your actual deployment process
