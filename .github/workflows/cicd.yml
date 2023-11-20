@@ -57,9 +57,8 @@ jobs:
     - name: Push Docker Image to Container Registry (GCR)
       env:
         GIT_TAG: v0.1.0
-      run: |-
-        IMAGE_URI = gcr.io/bkt-ivamlops-2023-ptcpt-e-d96584-default/$IMAGE_NAME
-        
+        IMAGE_URI: gcr.io/bkt-ivamlops-2023-ptcpt-e-d96584-default/$IMAGE_NAME
+      run: |-        
         docker tag $IMAGE_NAME:latest $IMAGE_URI:latest
         docker tag $IMAGE_NAME:latest $IMAGE_URI:$GIT_TAG
         docker push $IMAGE_URI:latest
