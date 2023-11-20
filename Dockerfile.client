@@ -6,6 +6,7 @@ WORKDIR /app
 #       If you are copying folders, the CONTENT of the origin folder will be copied
 #       inside the target folder. This is not what you would originally
 #       expect. So if you must, copy folders separately
+#
 
 # Suggested step 1: Install requirements
 # ...
