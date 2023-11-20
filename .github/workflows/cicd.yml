@@ -58,10 +58,12 @@ jobs:
       env:
         GIT_TAG: v0.1.0
       run: |-
-        docker tag $IMAGE_NAME:latest gcr.io/$PROJECT_ID/$IMAGE_NAME:latest
-        docker tag $IMAGE_NAME:latest gcr.io/$PROJECT_ID/$IMAGE_NAME:$GIT_TAG
-        docker push gcr.io/$PROJECT_ID/$IMAGE_NAME:latest
-        docker push gcr.io/$PROJECT_ID/$IMAGE_NAME:$GIT_TAG
+        IMAGE_URI = gcr.io/bkt-ivamlops-2023-ptcpt-e-d96584-default/$IMAGE_NAME
+        
+        docker tag $IMAGE_NAME:latest $IMAGE_URI:latest
+        docker tag $IMAGE_NAME:latest $IMAGE_URI:$GIT_TAG
+        docker push $IMAGE_URI:latest
+        docker push $IMAGE_URI:$GIT_TAG
         
     # Push the Docker images to Google Artifact Registry
     - name: Publish
