@@ -41,7 +41,7 @@ jobs:
       run: ls -l
       
     - name: Build Docker Image
-      run: docker build -t $IMAGE_NAME:latest -f mlops_module_1/Dockerfile.client mlops_module_1
+      run: docker build -t $IMAGE_NAME:latest -f Dockerfile.client .
 
     - name: Configure Docker Client
       run: |-
