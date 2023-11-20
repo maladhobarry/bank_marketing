@@ -6,17 +6,6 @@ scikit-learn-intelex
 pytest
 python-dotenv
 
-[all]
-Flask
-flask_restful
-gunicorn
-streamlit
-jupyter
-matplotlib
-seaborn
-prettytable
-scikit-learn-intelex
-
 [client]
 streamlit
 
