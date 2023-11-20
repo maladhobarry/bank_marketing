@@ -6,7 +6,7 @@ scikit-learn-intelex
 pytest
 python-dotenv
 
-[all]
+
 Flask
 flask_restful
 gunicorn
@@ -17,17 +17,17 @@ seaborn
 prettytable
 scikit-learn-intelex
 
-[client]
+
 streamlit
 
-[data-science]
+
 jupyter
 matplotlib
 seaborn
 prettytable
 scikit-learn-intelex
 
-[server]
+
 Flask
 flask_restful
 gunicorn
