@@ -53,16 +53,12 @@ jobs:
     - name: Configure Docker Client
       run: |-
         gcloud auth configure-docker --quiet
+        
+    - name: Push Docker Image to Google Artifact Registry
+      run: |-
+          docker push ${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/$IMAGE_NAME:latest
 
-    - name: Push Docker Image to Container Registry (GCR)
-      env:
-        GIT_TAG: v0.1.0
-        IMAGE_URI: gcr.io/bkt-ivamlops-2023-ptcpt-e-d96584-default/$IMAGE_NAME
-      run: |-        
-        docker tag $IMAGE_NAME:latest $IMAGE_URI:latest
-        docker tag $IMAGE_NAME:latest $IMAGE_URI:$GIT_TAG
-        docker push $IMAGE_URI:latest
-        docker push $IMAGE_URI:$GIT_TAG
+
         
     # Push the Docker images to Google Artifact Registry
     - name: Publish
