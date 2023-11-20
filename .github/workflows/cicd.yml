@@ -35,9 +35,7 @@ jobs:
 
     - uses: google-github-actions/auth@v1
       with:
-        service_account_key: ${{ secrets.SA_CICD_KEY }}
-        project_id: ${{ env.PROJECT_ID }}
-        export_default_credentials: true
+        credentials_json: ${{ secrets.SA_CICD_KEY }}
 
     # Get the GKE credentials so we can deploy to the cluster
     - name: Set up GKE credentials
