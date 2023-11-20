@@ -10,7 +10,7 @@ WORKDIR /app
 # Suggested step 1: Install requirements
 # ...
 COPY setup.cfg setup.py pyproject.toml requirements.txt /app/
-RUN mkdir /app/src && pip install --no-cache-dir '.[client]' -c requirements.txt && rm -r /app/src
+RUN mkdir /app/src && pip install --no-cache-dir .[client] -c requirements.txt && rm -r /app/src
 
 COPY src /app/src
 RUN pip install --no-cache-dir --no-deps .
