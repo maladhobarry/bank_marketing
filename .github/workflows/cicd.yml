@@ -41,8 +41,8 @@ jobs:
     - name: Set up GKE credentials
       uses: google-github-actions/get-gke-credentials@v1
       with:
-        cluster_name: ${{ env.GKE_CLUSTER }}
-        location: ${{ env.GKE_LOCATION }}
+        cluster_name: gke-cluster-nane1 
+        location: northamerica-northeast1
 
     - name: List Files in Directory
       run: ls -l
