@@ -56,12 +56,12 @@ jobs:
 
     - name: Tag Docker Image for GAR
       run: |
-        docker tag client:latest ${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/client:latest
+        docker tag client:latest ${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}:latest
 
         
     - name: Push Docker Image to Google Artifact Registry
       run: |-
-          docker push ${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/client:latest
+          docker push ${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}:latest
 
 
         
