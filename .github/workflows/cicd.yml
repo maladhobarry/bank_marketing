@@ -37,6 +37,9 @@ jobs:
       with:
         credentials_json: ${{ secrets.SA_CICD_KEY }}
 
+    - name: List Files in Directory
+      run: ls -l mlops_module_1
+      
     - name: Build Docker Image
       run: docker build -t $IMAGE_NAME:latest -f mlops_module_1/Dockerfile.client mlops_module_1
 
