@@ -1,0 +1,4 @@
+# This file is to indicate we want to install the local bank module
+# in our environment.
+# The file: allows us to avoid having absolute paths
+-e file:.[all,testing]
