@@ -49,6 +49,7 @@
 #          As always, you can override the ?= variables
 #          by providing them on the command line.
 DATETIME_NOW ?= $(shell date '+%F-%H-%M-%S')
+TAG=v44
 
 ifeq ($(origin TAG),undefined)
 DOCKER_TAG ::= :$(shell git rev-parse --no-flags --short=8 --tags HEAD)$(if $(ADD_DATETIME),-$(DATETIME_NOW),)
