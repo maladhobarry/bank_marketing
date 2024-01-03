@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  selector:
+    matchLabels:
+      app: frontend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: frontend
+      # Modified, so can use GCSFUSE
+      annotations:
+        gke-gcsfuse/volumes: "true"
+    spec:
+      # Modified / Added
+      serviceAccountName: sa-gke-default
+      containers:
+      - name: frontend
+        # Modified
+        image: northamerica-northeast1-docker.pkg.dev/ivamlops-2023-ptcpt-e-d96584/bank-marketing/client
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: 250m
+            memory: 100M
+          limits:
+            cpu: 500m
+            memory: 250M
+        ports:
+          - containerPort: 8501
+        env:
+          - name: ECO_SOCIO_DF
+            value: /data/external/socio_economic_indices_data.csv
+            # valueFrom:
+            #   configMapKeyRef:
+            #     name: cm-frontend
+            #     key: eco_socio_df
+          - name: FUTURE_RES_DF
+            value: /data/external/campaign_results_data.csv
+            # valueFrom:
+            #   configMapKeyRef:
+            #     name: cm-frontend
+            #     key: future_res_df
+          - name: BANK_DB
+            value: /data/bank_marketing.db
+            # valueFrom:
+            #   configMapKeyRef:
+            #     name: cm-frontend
+            #     key: bank_db
+          - name: SERVER_API_URL
+            value: http://backend.default.svc.cluster.local:8000/predict
+        volumeMounts:
+          - name: frontend
+            mountPath: /data
+            subPath: data/
+      volumes:
+        - name: frontend
+          persistentVolumeClaim:
+            # Modified
+            claimName: pvc-gcsfuse-frontend

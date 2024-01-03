@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+      # Modified, so can use GCSFUSE
+      annotations:
+        gke-gcsfuse/volumes: "true"
+    spec:
+      # Modified / Added
+      serviceAccountName: sa-gke-default
+      containers:
+      - name: backend
+        # Modified
+        # TODO(PARTICIPANT): REPLACE WITH YOUR IMAGE
+        image: northamerica-northeast1-docker.pkg.dev/ivamlops-2023-ptcpt-e-d96584/bank-marketing/server
+        imagePullPolicy: IfNotPresent
+        # command:
+        #   - "tail"
+        #   - "-f"
+        #   - "/dev/null"
+        ports:
+        - containerPort: 5000
+        resources:
+          requests:
+            cpu: 256m
+            memory: 500Mi
+          limits:
+            cpu: 512m
+            memory: 1G
+        env:
+          - name: TRANSFORMER_PATH
+            value: /models/rf_with_minibatch_kmeans/feature_eng_pipeline.joblib
+            # If you want want to use a ConfigMap - here named "cm-backend" -  you can:
+            # valueFrom:
+            #   configMapKeyRef:
+            #     name: cm-backend
+            #     key: transformer_path
+          - name: MODEL_PATH
+            value: /models/rf_with_minibatch_kmeans/model.joblib
+            # If you want want to use a ConfigMap - here named "cm-backend" -  you can:
+            # valueFrom:
+            #   configMapKeyRef:
+            #     name: cm-backend
+            #     key: model_path
+        volumeMounts:
+          - name: models
+            mountPath: /models
+            # The bucket is mounted as a whole in /models, but the bucket
+            # contains models, so we select it (instead of referencing /models/models)
+            subPath: models
+      volumes:
+        - name: models
+          persistentVolumeClaim:
+            # Modified
+            claimName: pvc-gcsfuse-models

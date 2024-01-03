@@ -1,0 +1,100 @@
+# We create some PersistentVolume (PV) to host our data
+# The way Kubernetes treats portability across environments
+# is that it defines some objects (here PersistentVolume) and lets
+# the implementation of that object be decided on some criterias.
+# Here, the type of the PersistentVolume is a criterion.
+#   See them here: 
+# There are multiple types of PV,
+#   We will be using one type of PV that also defines an interface for 
+#   a even more generic way of dealing with storage: the Container Storage
+#   Interface (CSI)
+#   The CSI will allow us to use a new feature in GKE:
+#   mapping a Google Cloud Storage Bucket to a PV.
+#
+# Note: While each type of PersistentVolume offers storage, their
+#       performance specs vary according to workloads. Some might
+#       be suited better than others in different situations.
+# 
+
+# Configures PV based on GCSFUSE
+# See https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/cloud-storage-fuse-csi-driver
+# We can choose to use a "static" PV rather than direct mount
+# using Pod PVC (might be easier to understand for students)
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-gcsfuse-models
+spec:
+  accessModes:
+  - ReadWriteMany
+  capacity:
+    storage: 5Gi # This value does not matter and will not be enforced in the case of Cloud storage bucket
+  storageClassName: example-storage-class
+  claimRef:
+    namespace: default
+    name: pvc-gcsfuse-models
+  mountOptions:
+    - implicit-dirs
+  csi:
+    driver: gcsfuse.csi.storage.gke.io
+    # Important to set a bucket that you (and your service account)
+    # has access to.
+    # TODO(PARTICIPANT): Update
+    volumeHandle: bkt-ivamlops-2023-ptcpt-e-d96584-default
+    readOnly: true
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-gcsfuse-models
+  namespace: default
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi # This value is not important, but must match above
+  volumeName: pv-gcsfuse-models
+  storageClassName: example-storage-class # This value is not important?, but must match above
+---
+# We create a second PV and PVC for the frontend, as that's what we had
+# for our local environment. However we could probably reuse the same
+# PVC since the same bucket is behind.
+# Having said that, our client could require some different mountOptions,
+# so we will configure those on a PV and a PVC.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-gcsfuse-frontend
+spec:
+  accessModes:
+  - ReadWriteMany
+  capacity:
+    storage: 5Gi
+  storageClassName: example-storage-class
+  claimRef:
+    namespace: default
+    name: pvc-gcsfuse-frontend
+  mountOptions:
+    - implicit-dirs
+  csi:
+    driver: gcsfuse.csi.storage.gke.io
+    # Important to set a bucket that you (and your service account)
+    # has access to.
+    # TODO(PARTICIPANT): Update
+    volumeHandle: bkt-ivamlops-2023-ptcpt-e-d96584-default
+    readOnly: true
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-gcsfuse-frontend
+  namespace: default
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi # This value is not important, but must match above
+  volumeName: pv-gcsfuse-frontend
+  storageClassName: example-storage-class # This value is not important?, but must match above
