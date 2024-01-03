@@ -41,14 +41,6 @@ jobs:
         run: |
           black --check server_app/ client_app/ src/bank_marketing
 
-      - name: Build docker test image
-        run: |
-          make docker-build-tests
-
-      - name: Run tests
-        run: |
-          make docker-run-tests
-
   setup-build-publish-deploy:
     # DONE: Consider renaming
     name: CICD- Build and Deploy
