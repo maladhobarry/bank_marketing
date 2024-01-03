@@ -204,7 +204,7 @@ freeze-requirements-no-bank_marketing:
 # And then look for a string containg your PROJECT ID and your cluster name
 .PHONY: scale-deployments-to-zero
 scale-deployments-to-zero:
-	kubectl --context=gke_ivamlops-2023-ptcpt-e-d96584_northamerica-northeast1_gke-cluster-nane1-mine scale --replicas=0 deploy/frontend deploy/backend
+	kubectl --context=gke_ivamlops-2023-ptcpt-e-d96584_northamerica-northeast1_gke-cluster-nane1 scale --replicas=0 deploy/frontend deploy/backend
 
 # This command is necessary to make a local (your laptop) folder be available/mounted in
 # the minikube nodes (the "VMs").
@@ -221,6 +221,6 @@ deploy-minikube:
 # Important: modify to use your own context
 .PHONY: deploy-gke
 deploy-gke:
-	@kubectl --context=gke_ivamlops-2023-ptcpt-e-d96584_northamerica-northeast1_gke-cluster-nane1-mine apply \
+	@kubectl --context=gke_ivamlops-2023-ptcpt-e-d96584_northamerica-northeast1_gke-cluster-nane1 apply \
 	-f 'manifests/base/*.yaml' \
 	-f 'manifests/cloud/*.yaml'
